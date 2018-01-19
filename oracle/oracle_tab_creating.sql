@@ -24,7 +24,7 @@ CREATE TABLE DONOR
   d_address   VARCHAR2(40),
   d_phone_num VARCHAR2(40),
   d_email     VARCHAR2(40),
-  d_total_sum NUMBER(8)
+  d_total_sum NUMBER(16)
 );
 
 CREATE TABLE CLIENT
@@ -38,9 +38,7 @@ CREATE TABLE CLIENT
   cl_phone_num    VARCHAR2(40),
   cl_email        VARCHAR2(40),
   cl_bank_account VARCHAR2(40),
-  cl_neededMoney  NUMBER(4),
-  cl_needsMoney    VARCHAR2(1) DEFAULT 'N',
-  CHECK (cl_needsMoney IN ('Y', 'N'))
+  cl_neededMoney  NUMBER(8)
 );
 
 CREATE TABLE HELP
@@ -55,7 +53,7 @@ CREATE TABLE DONATION
 (
   id_donation   NUMBER    NOT NULL PRIMARY KEY,
   donor         NUMBER    NOT NULL,
-  size_donation NUMBER(4) NOT NULL,
+  size_donation NUMBER(8) NOT NULL,
   date_donation DATE,
   id_help       NUMBER    NOT NULL,
   FOREIGN KEY (donor) REFERENCES DONOR (id_donor),

@@ -83,46 +83,66 @@ INSERT INTO DONOR (id_donor, d_name, d_surname, d_address, d_phone_num, d_email)
 VALUES (20, 'Silvio', 'Pitone', '38 Vahlen Avenue', '515-369-8222', 'spitonej@forbes.com');
 
 -- CLIENT
-INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num)
-VALUES (1, 'Anett', 'Jesson', '1950/11/21', 'Female', '61150 Cambridge Junction', 'ajesson0@telegraph.co.uk', '282-871-2628');
-INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num)
-VALUES (2, 'Mehetabel', 'Curran', '1982/09/24', 'Female', '15 Buena Vista Lane', 'mcurran1@mail.ru', '495-112-9660');
-INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num)
-VALUES (3, 'Calli', 'Harsnipe', '1952/03/23', 'Female', '6 2nd Parkway', 'charsnipe2@arstechnica.com', '448-571-3094');
-INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num)
-VALUES (4, 'Maritsa', 'Keighly', '1945/09/19', 'Female', '63167 Prairie Rose Park', 'mkeighly3@cdc.gov', '653-505-0072');
-INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num)
-VALUES (5, 'Enid', 'Van Dale', '2002/07/16', 'Female', '7014 Crowley Point', 'evandale4@dmoz.org', '582-768-0309');
-INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num)
-VALUES (6, 'Claiborne', 'Agdahl', '1980/05/15', 'Male', '8984 Artisan Junction', 'cagdahl5@diigo.com', '157-847-3800');
-INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num)
-VALUES (7, 'Eba', 'Jumonet', '1988/01/05', 'Female', '2987 Moland Alley', 'ejumonet6@blogger.com', '771-947-9624');
-INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num)
-VALUES (8, 'Aimee', 'Crannach', '1955/07/21', 'Female', '6 Sycamore Hill', 'acrannach7@europa.eu', '865-814-2333');
-INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num)
-VALUES (9, 'Adah', 'Bartczak', '2001/05/22', 'Female', '978 Chive Alley', 'abartczak8@amazon.co.uk', '964-495-3343');
-INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num)
-VALUES (10, 'Angy', 'Hallihane', '1949/01/15', 'Female', '883 Kedzie Court', 'ahallihane9@soundcloud.com', '246-151-3344');
-INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num)
-VALUES (11, 'Osborne', 'Battleson', '1970/11/04', 'Male', '43631 Superior Junction', 'obattlesona@yellowpages.com', '330-300-8115');
-INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num)
-VALUES (12, 'Bonnie', 'Jamson', '1975/10/09', 'Female', '93 Autumn Leaf Court', 'bjamsonb@woothemes.com', '576-379-9766');
-INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num)
-VALUES (13, 'Pietrek', 'Abrahamowitcz', '2002/05/15', 'Male', '4367 Arrowood Drive', 'pabrahamowitczc@businesswire.com', '891-893-4629');
-INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num)
-VALUES (14, 'Sayre', 'Leaton', '2009/06/18', 'Female', '79 Melvin Alley', 'sleatond@samsung.com', '617-446-8506');
-INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num)
-VALUES (15, 'Matilda', 'le Keux', '2017/09/09', 'Female', '207 Sugar Drive', 'mlekeuxe@so-net.ne.jp', '986-103-4273');
-INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num)
-VALUES (16, 'Dulciana', 'Tuckey', '2017/03/07', 'Female', '62698 Sherman Court', 'dtuckeyf@ibm.com', '442-682-3677');
-INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num)
-VALUES (17, 'Winslow', 'Crichten', '1984/09/09', 'Male', '64654 Cambridge Crossing', 'wcrichteng@accuweather.com', '486-266-4629');
-INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num)
-VALUES (18, 'Tonya', 'Clayill', '1941/03/17', 'Female', '3 Hauk Crossing', 'tclayillh@independent.co.uk', '406-526-1995');
-INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num)
-VALUES (19, 'Paddie', 'Bertelmot', '2000/11/12', 'Male', '86 Vidon Plaza', 'pbertelmoti@intel.com', '797-728-5901');
-INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num)
-VALUES (20, 'Ferguson', 'Losemann', '1978/12/23', 'Male', '0 Dexter Road', 'flosemannj@adobe.com', '344-485-5651');
+INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num, cl_bank_account, cl_needed_money)
+VALUES (1, 'Hy', 'Fredi', '1989-08-16', 'Male', '12800 Jenna Park', 'hfredi0@biglobe.ne.jp', '350-980-1729',
+        '5602238072231787', 1000);
+INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num, cl_bank_account, cl_needed_money)
+VALUES (2, 'Warden', 'Whitehouse', '2012-02-03', 'Male', '47 Farwell Way', 'wwhitehouse1@walmart.com', '537-815-1974',
+        '30322563096330', 4000);
+INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num, cl_bank_account, cl_needed_money)
+VALUES (3, 'Reba', 'Padillo', '1984-08-21', 'Female', '263 Anderson Hill', 'rpadillo2@statcounter.com', '274-700-0712',
+        '6759366897411997127', 2000);
+INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num, cl_bank_account, cl_needed_money)
+VALUES (4, 'Kali', 'Iacovone', '1961-08-07', 'Female', '1559 Blue Bill Park Lane', 'kiacovone3@nationalgeographic.com',
+        '865-612-5782', '4017955963626237', 4000);
+INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num, cl_bank_account, cl_needed_money)
+VALUES (5, 'Pia', 'Stowte', '1997-02-03', 'Female', '88 Corben Road', 'pstowte4@accuweather.com', '163-198-6422',
+        '3589757965933821', 2100);
+INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num, cl_bank_account, cl_needed_money)
+VALUES (6, 'Angelico', 'Cuff', '1950-06-16', 'Male', '120 Blue Bill Park Avenue', 'acuff5@posterous.com',
+        '711-121-3303', '3578462532115662', 4000);
+INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num, cl_bank_account, cl_needed_money)
+VALUES (7, 'Melvyn', 'Ashworth', '1958-12-28', 'Male', '932 Dixon Court', 'mashworth6@biglobe.ne.jp', '995-931-6315',
+        '3535345168745641', 1500);
+INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num, cl_bank_account, cl_needed_money)
+VALUES (8, 'Elysee', 'Ballham', '1968-06-08', 'Female', '8005 Annamark Plaza', 'eballham7@wired.com', '393-847-8177',
+        '67068535075900160', 2500);
+INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num, cl_bank_account, cl_needed_money)
+VALUES (9, 'Dore', 'Draper', '1972-10-17', 'Female', '94 Maywood Pass', 'ddraper8@vkontakte.ru', '597-206-0349',
+        '201770166194675', 4200);
+INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num, cl_bank_account, cl_needed_money)
+VALUES (10, 'Vincent', 'Lockyer', '2002-08-27', 'Male', '13 Amoth Trail', 'vlockyer9@myspace.com', '783-234-7150',
+        '3569027730541059', 1500);
+INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num, cl_bank_account, cl_needed_money)
+VALUES (11, 'Estrella', 'Childes', '1961-06-18', 'Female', '594 Cody Plaza', 'echildesa@rediff.com', '566-371-0110',
+        '3546105404834832', 4000);
+INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num, cl_bank_account, cl_needed_money)
+VALUES (12, 'Otes', 'Jennery', '2014-06-21', 'Male', '6741 Moland Alley', 'ojenneryb@seattletimes.com', '454-361-8931',
+        '3543833600307377', 4200);
+INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num, cl_bank_account, cl_needed_money)
+VALUES (13, 'Gaelan', 'Persicke', '1997-06-24', 'Male', '8 Glendale Hill', 'gpersickec@jimdo.com', '584-447-8496',
+        '3536411850266376', 3500);
+INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num, cl_bank_account, cl_needed_money)
+VALUES (14, 'Staffard', 'Noyes', '1992-07-03', 'Male', '3 Mallard Crossing', 'snoyesd@home.pl', '257-463-6189',
+        '3583954716073967', 4300);
+INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num, cl_bank_account, cl_needed_money)
+VALUES (15, 'Clareta', 'Hannaford', '1963-09-27', 'Female', '49187 Evergreen Parkway', 'channaforde@utexas.edu',
+        '545-608-4531', '3579555509545909', 3500);
+INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num, cl_bank_account, cl_needed_money)
+VALUES (16, 'Juliana', 'Cokely', '1997-09-21', 'Female', '5 Corscot Street', 'jcokelyf@state.gov', '209-283-7063',
+        '374288918997486', 3500);
+INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num, cl_bank_account, cl_needed_money)
+VALUES (17, 'Neille', 'Merwe', '1963-05-11', 'Female', '9 Bunting Crossing', 'nmerweg@ifeng.com', '750-859-8289',
+        '3548635031783307', 5000);
+INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num, cl_bank_account, cl_needed_money)
+VALUES (18, 'Alonso', 'Vale', '1985-09-30', 'Male', '68665 Hanson Park', 'avaleh@slideshare.net', '203-354-5898',
+        '5109534974025220', 4000);
+INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num, cl_bank_account, cl_needed_money)
+VALUES (19, 'Sherrie', 'Stolberg', '1994-12-06', 'Female', '45 Hayes Park', 'sstolbergi@newsvine.com', '394-902-0461',
+        '3561850077957705', 3000);
+INSERT INTO CLIENT (id_client, cl_name, cl_surname, cl_birth_date, cl_gender, cl_address, cl_email, cl_phone_num, cl_bank_account, cl_needed_money)
+VALUES (20, 'Marquita', 'Devonside', '1996-04-11', 'Female', '5015 Fairfield Road', 'mdevonsidej@sitemeter.com',
+        '389-617-7546', '5189107722614455', 2500);
 
 -- HELP
 INSERT INTO HELP (id_help, client)
@@ -284,7 +304,7 @@ VALUES (16, 16, 3810, '2012/02/13', 36);
 INSERT INTO DONATION (id_donation, donor, size_donation, date_donation, id_help)
 VALUES (17, 17, 4940, '2010/05/26', 37);
 INSERT INTO DONATION (id_donation, donor, size_donation, date_donation, id_help)
-VALUES (18, 18, 240, '2015/10/26', 38);
+VALUES (18, 18, 4400, '2015/10/26', 38);
 INSERT INTO DONATION (id_donation, donor, size_donation, date_donation, id_help)
 VALUES (19, 19, 2850, '2013/01/10', 39);
 INSERT INTO DONATION (id_donation, donor, size_donation, date_donation, id_help)
