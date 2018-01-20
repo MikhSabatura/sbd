@@ -92,29 +92,36 @@ ROLLBACK
 EXECUTE TOTAL_HELP_INFO(1);
 
 --2. equally distributes the donated money among people who need it
+--   the donation is made by the specified donor, or from anonymous in case the donor's name isn't specified
 CREATE OR REPLACE PROCEDURE DONATE_TO_EVERYONE_IN_NEED
-  (arg_id_donor NUMBER, total_donation_size NUMBER)
+  (arg_id_donor  NUMBER,
+    donor_name VARCHAR2 DEFAULT 'ANONYMOUS', donor_surname VARCHAR2 DEFAULT 'ANONYMOUS',
+    total_donation_size NUMBER)
 AS
-  tmp_id_client NUMBER;
   tmp_donation_size NUMBER(10, 2);
-  tmp_needed_money NUMBER; -- sum of money needed by the processed client, used to calculate donation size
-  tmp_received_money NUMBER; -- sum of money already donated to the client
   donation_left NUMBER := total_donation_size; -- used for calculating avg donation
-  people_count NUMBER; -- used for checking if anybody needs help
   people_left NUMBER; -- used for calculating avg donation
-  no_people_in_need_exception EXCEPTION;
 
   donor_count NUMBER;-- to check if there is such donor
+  people_count NUMBER; -- used for checking if anybody needs help
+  no_people_in_need_exception EXCEPTION;
+
+  donor_id NUMBER := arg_id_donor; -- used because arg_id_donor may be null
+  help_id NUMBER; -- for generating help id
+  donation_id NUMBER; -- for generating donation id
 
   CURSOR people_in_need_cursor IS
-    SELECT ID_CLIENT, CL_NEEDEDMONEY
+    SELECT ID_CLIENT,
+      CL_NEEDEDMONEY - (SELECT SUM(size_donation)
+                        FROM HELP, DONATION
+                        WHERE CLIENT = CLIENT.ID_CLIENT AND DONATION.ID_HELP = HELP.ID_HELP) NEEDED_SUM
     FROM CLIENT
     WHERE CL_NEEDEDMONEY > (SELECT SUM(size_donation)
                             FROM HELP, DONATION
                             WHERE CLIENT = CLIENT.ID_CLIENT AND DONATION.ID_HELP = HELP.ID_HELP)
-    ORDER BY CL_NEEDEDMONEY - (SELECT SUM(size_donation)
-              FROM HELP, DONATION
-              WHERE CLIENT = CLIENT.ID_CLIENT AND DONATION.ID_HELP = HELP.ID_HELP);
+    ORDER BY NEEDED_SUM;
+  tmp_client people_in_need_cursor%ROWTYPE;
+
 BEGIN
   -- check if anybody needs help
   SELECT COUNT(id_client) INTO people_count
@@ -127,40 +134,44 @@ BEGIN
   END IF;
   people_left := people_count;
 
-  -- todo -- insert the donor record in case there's no one present yet
+  -- check if the donor id is specified
+  IF arg_id_donor IS NULL THEN
+    SELECT NVL(MAX(id_donor) + 1, 1) INTO donor_id FROM DONOR;
+    INSERT INTO DONOR (id_donor, d_name, d_surname) VALUES (donor_id, donor_name, donor_surname);
+  ELSE
+    -- insert donor record if there is no such yet
+    SELECT COUNT(id_donor) INTO donor_count
+    FROM DONOR
+    WHERE id_donor = arg_id_donor;
+    IF donor_count < 1 THEN
+      INSERT INTO DONOR (id_donor, d_name, d_surname) VALUES (arg_id_donor, donor_name, donor_surname);
+    END IF;
+  END IF;
+
   OPEN people_in_need_cursor;
   LOOP
-    FETCH people_in_need_cursor INTO tmp_id_client, tmp_needed_money;
+    FETCH people_in_need_cursor INTO tmp_client;
     EXIT WHEN people_in_need_cursor%NOTFOUND;
 
-    SELECT SUM(size_donation) INTO tmp_received_money
-    FROM HELP, DONATION
-    WHERE HELP.client = tmp_id_client AND DONATION.id_help = HELP.id_help;
-    tmp_needed_money := tmp_needed_money - tmp_received_money;
-
-    DBMS_OUTPUT.PUT_LINE(donation_left || ' LEFT');
-
-    --debug
-    DBMS_OUTPUT.PUT_LINE(tmp_id_client || ' id ' || tmp_received_money || ' received ' || tmp_needed_money || ' needed');
-    --/debug
-
     tmp_donation_size := donation_left / people_left;
-    --debug
-    DBMS_OUTPUT.PUT_LINE(tmp_donation_size || ' before checking');
-    --/debug
 
-    IF tmp_donation_size > tmp_needed_money THEN
-      tmp_donation_size := tmp_needed_money;
+    IF tmp_donation_size > tmp_client.NEEDED_SUM THEN
+      tmp_donation_size := tmp_client.NEEDED_SUM;
     END IF;
 
-    DBMS_OUTPUT.PUT_LINE(tmp_donation_size || ' after checking');
+    SELECT NVL(MAX(id_help) + 1, 1) INTO help_id FROM HELP;
+    INSERT INTO HELP (id_help, client) VALUES (help_id, tmp_client.ID_CLIENT);
+
+    SELECT NVL(MAX(id_donation) + 1, 1) INTO donation_id FROM DONATION;
+    INSERT INTO DONATION (id_donation, donor, size_donation, date_donation, id_help)
+    VALUES (donation_id, donor_id, tmp_donation_size, SYSDATE,help_id);
 
     donation_left := donation_left - tmp_donation_size;
     people_left := people_left - 1;
   END LOOP;
   CLOSE people_in_need_cursor;
 
-  -- outputing the result of procedure
+  -- printing the result
   IF donation_left > 0 THEN
     DBMS_OUTPUT.PUT_LINE('Everyone in need got necessary help, still ' || donation_left || ' left');
   ELSE
@@ -173,31 +184,18 @@ EXCEPTION
 END;
 
 -- testing
-EXECUTE DONATE_TO_EVERYONE_IN_NEED(0, 1100);
-SELECT *
-  FROM CLIENT
-  WHERE CL_NEEDEDMONEY < (SELECT SUM(size_donation)
-                          FROM HELP, DONATION
-                          WHERE CLIENT = CLIENT.ID_CLIENT AND DONATION.ID_HELP = HELP.ID_HELP);
+SELECT * FROM DONOR WHERE ID_DONOR = 100;
+SELECT SUM(size_donation) FROM DONATION WHERE DONOR = 100;
+EXECUTE DONATE_TO_EVERYONE_IN_NEED(100, 'TEST', 'TEST', 1100);
+ROLLBACK
 
------------------- testing queries
-SELECT ID_CLIENT
+-- query for finding clients who need monetary help
+SELECT ID_CLIENT,
+CL_NEEDEDMONEY - (SELECT SUM(size_donation)
+                    FROM HELP, DONATION
+                    WHERE CLIENT = CLIENT.ID_CLIENT AND DONATION.ID_HELP = HELP.ID_HELP) NEEDED_MONEY
 FROM CLIENT
-WHERE CL_NEEDEDMONEY > (SELECT SUM(SIZE_DONATION)
+WHERE CL_NEEDEDMONEY > (SELECT SUM(size_donation)
                         FROM HELP, DONATION
-                        WHERE CLIENT = CLIENT.ID_CLIENT AND DONATION.ID_HELP = HELP.ID_HELP);
-
-SELECT SUM(size_donation)
-    FROM HELP, DONATION
-    WHERE HELP.client = 5 AND DONATION.id_help = HELP.id_help;
-
-select * FROM CLIENT;
-
-SELECT ID_CLIENT, CL_NEEDEDMONEY
-    FROM CLIENT
-    WHERE CL_NEEDEDMONEY > (SELECT SUM(size_donation)
-                            FROM HELP, DONATION
-                            WHERE CLIENT = CLIENT.ID_CLIENT AND DONATION.ID_HELP = HELP.ID_HELP)
-    ORDER BY CL_NEEDEDMONEY - (SELECT SUM(size_donation)
-              FROM HELP, DONATION
-              WHERE CLIENT = CLIENT.ID_CLIENT AND DONATION.ID_HELP = HELP.ID_HELP);
+                        WHERE CLIENT = CLIENT.ID_CLIENT AND DONATION.ID_HELP = HELP.ID_HELP)
+ORDER BY NEEDED_MONEY;
