@@ -4,8 +4,8 @@ SET SERVEROUTPUT ON;
 CREATE OR REPLACE PROCEDURE TOTAL_HELP_INFO
   (cl_id IN NUMBER)
 AS
-  count_1 NUMBER;
-  count_2 NUMBER;
+  count_1 NUMBER; -- to check if such client exists and if he got volunteerings
+  count_2 NUMBER; -- to check if the client was helped and if he got donations
 
   no_such_client_exception EXCEPTION;
   no_help_exception EXCEPTION;
@@ -182,10 +182,13 @@ EXCEPTION
   WHEN no_people_in_need_exception THEN
   DBMS_OUTPUT.PUT_LINE('NO PEOPLE NEED MONETARY HELP AT THE MOMENT');
 END;
+/
 
 -- testing
 SELECT * FROM DONOR WHERE ID_DONOR = 100;
 SELECT SUM(size_donation) FROM DONATION WHERE DONOR = 100;
+EXECUTE DONATE_TO_EVERYONE_IN_NEED(1100);
+EXECUTE DONATE_TO_EVERYONE_IN_NEED(100, 1100);
 EXECUTE DONATE_TO_EVERYONE_IN_NEED(100, 'TEST', 'TEST', 1100);
 ROLLBACK
 
