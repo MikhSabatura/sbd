@@ -202,3 +202,87 @@ WHERE CL_NEEDEDMONEY > (SELECT SUM(size_donation)
                         FROM HELP, DONATION
                         WHERE CLIENT = CLIENT.ID_CLIENT AND DONATION.ID_HELP = HELP.ID_HELP)
 ORDER BY NEEDED_MONEY;
+
+--3. shows top 3 donations made in the given year
+CREATE OR REPLACE PROCEDURE SHOW_TOP_DONATIONS
+  (arg_year NUMBER)
+AS
+  CURSOR donations_curs IS
+    SELECT ID_CLIENT, cl_name, CL_SURNAME, ID_DONOR, D_NAME, D_SURNAME, SIZE_DONATION, DATE_DONATION
+    FROM CLIENT, HELP, DONATION, DONOR
+    WHERE HELP.CLIENT = CLIENT.ID_CLIENT AND DONATION.ID_HELP = HELP.ID_HELP AND DONATION.DONOR = DONOR.ID_DONOR
+          AND EXTRACT(YEAR FROM DATE_DONATION) = arg_year
+    ORDER BY SIZE_DONATION DESC;
+  donation donations_curs%ROWTYPE;
+  donations_count NUMBER := 0; -- to show only top 3
+
+  check_donations NUMBER; -- to check if any donations were made that year
+  no_donations_made_exception EXCEPTION; -- raised in case there are no donations made that year
+BEGIN
+  -- check if there any donations were made
+  SELECT COUNT(id_donation) INTO check_donations
+  FROM DONATION
+  WHERE EXTRACT(YEAR FROM DATE_DONATION) = arg_year;
+
+  IF check_donations < 1 THEN
+    RAISE no_donations_made_exception;
+  ELSIF check_donations < 3 THEN
+    DBMS_OUTPUT.PUT_LINE('Only ' || check_donations || ' were made that year:');
+  END IF;
+
+  OPEN donations_curs;
+  LOOP
+    EXIT WHEN donations_count > 2;
+    FETCH donations_curs INTO donation;
+    EXIT WHEN donations_curs%NOTFOUND;
+
+    donations_count := donations_count + 1;
+
+    DBMS_OUTPUT.PUT('#' || donations_count || ' the sum is ' || donation.SIZE_DONATION || ' received by ' || donation.CL_NAME || ' ' || donation.CL_SURNAME);
+
+    IF donation.D_NAME = 'ANONYMOUS' OR donation.D_NAME IS NULL THEN
+      DBMS_OUTPUT.PUT(', the donor is anonymous');
+    ELSE
+      DBMS_OUTPUT.PUT(', donated by ' || donation.D_NAME || ' ' || donation.D_SURNAME);
+    END IF;
+    DBMS_OUTPUT.PUT(' | ' || donation.DATE_DONATION);
+    DBMS_OUTPUT.NEW_LINE;
+  END LOOP;
+  CLOSE donations_curs;
+
+EXCEPTION
+  WHEN no_donations_made_exception THEN
+  DBMS_OUTPUT.PUT_LINE('NO DONATIONS WERE MADE THAT YEAR');
+END;
+/
+-- testing
+EXECUTE SHOW_TOP_DONATIONS(2010);
+EXECUTE SHOW_TOP_DONATIONS(2000);
+EXECUTE SHOW_TOP_DONATIONS(2017);
+
+-- insert and check with 2018
+EXECUTE SHOW_TOP_DONATIONS(2018);
+SAVEPOINT before_inserting;
+
+INSERT INTO HELP(ID_HELP, CLIENT) VALUES (101, 1);
+INSERT INTO HELP(ID_HELP, CLIENT) VALUES (102, 2);
+INSERT INTO HELP(ID_HELP, CLIENT) VALUES (103, 3);
+INSERT INTO HELP(ID_HELP, CLIENT) VALUES (104, 4);
+INSERT INTO HELP(ID_HELP, CLIENT) VALUES (105, 5);
+
+INSERT INTO DONOR(ID_DONOR) VALUES (100);
+
+INSERT INTO DONATION (ID_DONATION, DONOR, SIZE_DONATION, DATE_DONATION, ID_HELP) VALUES (101, 100, 9999, sysdate, 1);
+INSERT INTO DONATION (ID_DONATION, DONOR, SIZE_DONATION, DATE_DONATION, ID_HELP) VALUES (102, 2, 8888, sysdate, 2);
+INSERT INTO DONATION (ID_DONATION, DONOR, SIZE_DONATION, DATE_DONATION, ID_HELP) VALUES (103, 3, 7777, sysdate, 3);
+INSERT INTO DONATION (ID_DONATION, DONOR, SIZE_DONATION, DATE_DONATION, ID_HELP) VALUES (104, 4, 5555, sysdate, 4);
+INSERT INTO DONATION (ID_DONATION, DONOR, SIZE_DONATION, DATE_DONATION, ID_HELP) VALUES (105, 5, 4444, sysdate, 5);
+
+ROLLBACK TO SAVEPOINT before_inserting;
+
+-- query used in the cursor
+SELECT ID_CLIENT, cl_name, CL_SURNAME, ID_DONOR, D_NAME, D_SURNAME, SIZE_DONATION, DATE_DONATION
+    FROM CLIENT, HELP, DONATION, DONOR
+    WHERE HELP.CLIENT = CLIENT.ID_CLIENT AND DONATION.ID_HELP = HELP.ID_HELP AND DONATION.DONOR = DONOR.ID_DONOR
+          AND EXTRACT(YEAR FROM DATE_DONATION) = 2010
+    ORDER BY SIZE_DONATION DESC;
