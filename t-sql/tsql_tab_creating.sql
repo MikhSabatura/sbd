@@ -10,7 +10,7 @@ DROP TABLE EX_CLIENT;
 
 CREATE TABLE VOLUNTEER
 (
-  id_volunteer  INT      NOT NULL PRIMARY KEY,
+  id_volunteer  INT         NOT NULL PRIMARY KEY,
   vol_name      VARCHAR(20) NOT NULL,
   vol_surname   VARCHAR(20) NOT NULL,
   vol_address   VARCHAR(40),
@@ -31,7 +31,7 @@ CREATE TABLE DONOR
 
 CREATE TABLE CLIENT
 (
-  id_client       INT      NOT NULL PRIMARY KEY,
+  id_client       INT         NOT NULL PRIMARY KEY,
   cl_name         VARCHAR(20) NOT NULL,
   cl_surname      VARCHAR(20) NOT NULL,
   cl_birth_date   DATE,
@@ -40,7 +40,8 @@ CREATE TABLE CLIENT
   cl_phone_num    VARCHAR(40),
   cl_email        VARCHAR(40),
   cl_bank_account VARCHAR(40),
-  cl_gets_help    VARCHAR(1) DEFAULT 'N'
+  cl_neededMoney  MONEY,
+  cl_gets_help    BIT DEFAULT 0
 );
 
 CREATE TABLE HELP
@@ -53,11 +54,11 @@ CREATE TABLE HELP
 
 CREATE TABLE DONATION
 (
-  id_donation   INT           NOT NULL PRIMARY KEY,
-  donor         INT           NOT NULL,
+  id_donation   INT   NOT NULL PRIMARY KEY,
+  donor         INT   NOT NULL,
   size_donation MONEY NOT NULL,
   date_donation DATE,
-  id_help       INT           NOT NULL,
+  id_help       INT   NOT NULL,
   FOREIGN KEY (donor) REFERENCES DONOR (id_donor),
   FOREIGN KEY (id_help) REFERENCES HELP (id_help)
 );
@@ -74,15 +75,16 @@ CREATE TABLE VOLUNTEERING
 
 CREATE TABLE EX_CLIENT
 (
-  id_ex_client       INT      NOT NULL PRIMARY KEY,
-  ex_cl_name         VARCHAR(20) NOT NULL,
-  ex_cl_surname      VARCHAR(20) NOT NULL,
-  ex_cl_birth_date   DATE,
-  ex_cl_gender       VARCHAR(20) NOT NULL,
-  ex_cl_adress       VARCHAR(40),
-  ex_cl_phone_num    VARCHAR(40),
-  ex_cl_email        VARCHAR(40),
-  ex_cl_bank_account VARCHAR(40),
-  ex_cl_got_help     VARCHAR(1),
-  delete_date        DATE
+  id_ex_client          INT         NOT NULL PRIMARY KEY,
+  ex_cl_name            VARCHAR(20) NOT NULL,
+  ex_cl_surname         VARCHAR(20) NOT NULL,
+  ex_cl_birth_date      DATE,
+  ex_cl_gender          VARCHAR(20) NOT NULL,
+  ex_cl_adress          VARCHAR(40),
+  ex_cl_phone_num       VARCHAR(40),
+  ex_cl_email           VARCHAR(40),
+  ex_cl_bank_account    VARCHAR(40),
+  ex_cl_total_donations MONEY,
+  ex_cl_got_help        BIT,
+  delete_date           DATE
 );
