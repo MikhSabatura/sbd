@@ -4,7 +4,6 @@ DROP TABLE HELP;
 DROP TABLE VOLUNTEER;
 DROP TABLE DONOR;
 DROP TABLE CLIENT;
-DROP TABLE EX_CLIENT;
 
 CREATE TABLE VOLUNTEER
 (
@@ -67,19 +66,4 @@ CREATE TABLE VOLUNTEERING
   id_help           NUMBER NOT NULL,
   FOREIGN KEY (volunteer) REFERENCES VOLUNTEER (id_volunteer),
   FOREIGN KEY (id_help) REFERENCES HELP (id_help)
-);
-
-CREATE TABLE EX_CLIENT
-(
-  id_ex_client       NUMBER       NOT NULL PRIMARY KEY,
-  ex_cl_name         VARCHAR2(20) NOT NULL,
-  ex_cl_surname      VARCHAR2(20) NOT NULL,
-  ex_cl_birth_date   DATE,
-  ex_cl_gender       VARCHAR2(20) NOT NULL,
-  ex_cl_adress       VARCHAR2(40),
-  ex_cl_phone_num    VARCHAR2(40),
-  ex_cl_email        VARCHAR2(40),
-  ex_cl_bank_account VARCHAR2(40),
-  ex_cl_got_help     VARCHAR2(1),
-  delete_date        DATE
 );
