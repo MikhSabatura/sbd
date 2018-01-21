@@ -23,8 +23,7 @@ CREATE TABLE DONOR
   d_surname   VARCHAR2(20),
   d_address   VARCHAR2(40),
   d_phone_num VARCHAR2(40),
-  d_email     VARCHAR2(40),
-  d_total_sum NUMBER(16)
+  d_email     VARCHAR2(40)
 );
 
 CREATE TABLE CLIENT
