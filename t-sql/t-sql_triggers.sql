@@ -186,7 +186,7 @@ VALUES (25, 'Angelico', 'Cuff', '1950-06-16', 'Male', '120 Blue Bill Park Avenue
 INSERT INTO HELP (id_help, client)
 VALUES (41, 21);
 INSERT INTO HELP (id_help, client)
-VALUES (41, 22);
+VALUES (42, 22);
 INSERT INTO HELP (id_help, client)
 VALUES (43, 23);
 INSERT INTO HELP (id_help, client)
