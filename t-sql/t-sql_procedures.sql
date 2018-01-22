@@ -1,12 +1,13 @@
 USE s15711;
 
--- I. RESULT SET
+--------------------- I. RESULT SET
 
--- 1. Shows people who need monetary help
+-- 1. Shows clients that need monetary help
 DROP PROCEDURE CLIENTS_NEEDING_HELP;
 CREATE PROCEDURE CLIENTS_NEEDING_HELP
 AS
 BEGIN
+  SET NOCOUNT ON;
   SELECT
     ID_CLIENT,
     (SELECT SUM(size_donation)
@@ -16,17 +17,32 @@ BEGIN
   FROM CLIENT
   WHERE cl_neededMoney < (SELECT SUM(size_donation)
                           FROM HELP, DONATION
-                          WHERE CLIENT = CLIENT.ID_CLIENT AND
-                                DONATION.ID_HELP = HELP.ID_HELP)
+                          WHERE CLIENT = CLIENT.ID_CLIENT AND DONATION.ID_HELP = HELP.ID_HELP)
   ORDER BY NEEDED_SUM DESC;
 
 END;
 -- testing
 EXECUTE CLIENTS_NEEDING_HELP;
 
--- 2.
+-- 2. Shows all help provided for a given client
+DROP PROCEDURE ALL_HELP;
+CREATE PROCEDURE ALL_HELP
+  @id_client INT
+AS
+BEGIN
+  SELECT id_volunteer, vol_name, vol_surname, date_volunteering
+  FROM VOLUNTEER, VOLUNTEERING, HELP
+  WHERE id_volunteer = volunteer AND HELP.id_help = VOLUNTEERING.id_help AND HELP.client = @id_client;
 
--- II. OUTPUT
+  SELECT id_donor, d_name, d_surname, date_donation, size_donation
+  FROM DONOR, DONATION, HELP
+  WHERE DONOR.id_donor = DONATION.donor AND HELP.id_help = DONATION.id_help AND HELP.client = @id_client;
+END;
+-- testing
+EXECUTE ALL_HELP 2;
+
+
+--------------------- II. OUTPUT
 
 -- 1. Distributes the money among people who need monetary help // used by REDISTRIBUTE_MONEY
 DROP PROCEDURE DISTRIBUTE_DONATION;
@@ -161,6 +177,8 @@ CREATE PROCEDURE FIND_TOP_DONATION
   @top_donor_id INT OUTPUT
 AS
 BEGIN
+  SET NOCOUNT ON;
+
   SELECT @top_donation_id = id_donation, @top_donor_id = donor
   FROM HELP, DONATION
   WHERE HELP.client = @id_client AND DONATION.id_help = HELP.id_help
@@ -173,7 +191,7 @@ DECLARE @donor INT, @donation INT;
 EXECUTE FIND_TOP_DONATION 5, @donor OUTPUT, @donation OUTPUT;
 PRINT CAST(@donor as VARCHAR(20)) + ' ' + cast(@donation as VARCHAR(20));
 
--- III. RETURN
+--------------------- III. RETURN
 -- 1. Changes help status for all clients who have associated help, outputs the number of updated records
 DROP PROCEDURE UPD_HELP_STATUS;
 CREATE PROCEDURE UPD_HELP_STATUS
@@ -232,35 +250,3 @@ END;
 DECLARE @needed_sum MONEY;
 EXECUTE @needed_sum = CALC_NEEDED_SUM 1;
 PRINT 'NEEDED SUM IS ' + CAST(@needed_sum AS VARCHAR(20));
-
-
-
------------- IDEAS:
-
--- 3. moves all clients who got help into got_help table
-
--- find how much monetary help is needed by the clients in general
-
--- DELETION:
--- deletes help associated with the given client
--- deletes donations associated with the given help
--- deletes volunteerings associated with the given help
-
-
-SELECT SUM(size_donation)
-FROM HELP, DONATION
-WHERE CLIENT = 3 AND DONATION.ID_HELP = HELP.ID_HELP;
-
-SELECT cl_neededMoney
-FROM CLIENT
-WHERE id_client = 3;
-
-SELECT donor
-FROM DONATION, help, CLIENT C
-WHERE HELP.id_help = DONATION.id_help AND HELP.client = C.id_client
-      AND size_donation = (SELECT MAX(size_donation)
-                           FROM DONATION, HELP
-                           WHERE DONATION.id_help = HELP.id_help AND HELP.client = C.id_client);
-
-SELECT SUM(cl_neededMoney) FROM CLIENT;
-SELECT SUM(size_donation) FROM DONATION;
